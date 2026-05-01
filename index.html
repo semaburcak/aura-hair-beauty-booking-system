@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Aura Hair & Beauty</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #0a0a0a;
+    color: white;
+}
+
+/* NAV */
+.nav {
+    background: black;
+    padding: 18px;
+    text-align: center;
+    color: #d4af37;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, black, #d4af37);
+}
+
+.hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    margin: 0;
+}
+
+.hero p {
+    margin-top: 10px;
+    color: #eee;
+}
+
+/* SERVICES */
+.services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 40px 20px;
+}
+
+.service {
+    background: #111;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.service:hover {
+    border-color: gold;
+}
+
+/* FORM */
+.form-container {
+    max-width: 600px;
+    margin: 20px auto 60px;
+    background: #111;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: #000;
+    color: white;
+    border: 1px solid #333;
+    border-radius: 6px;
+}
+
+input:focus, select:focus {
+    border-color: gold;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: gold;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+#message {
+    text-align: center;
+    margin-top: 10px;
+    color: lightgreen;
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+Aura Hair & Beauty
+</div>
+
+<div class="hero">
+<h1>Luxury Hair Experience</h1>
+<p>Book your appointment effortlessly</p>
+</div>
+
+<div class="services">
+<div class="service">Haircut - £35</div>
+<div class="service">Blow Dry - £30</div>
+<div class="service">Hair Colour - £65</div>
+<div class="service">Keratin Treatment - £90</div>
+</div>
+
+<div class="form-container">
+
+<form id="bookingForm">
+
+<label>Full Name</label>
+<input type="text" id="name" required>
+
+<label>Email</label>
+<input type="email" id="email" required>
+
+<label>Phone</label>
+<input type="text" id="phone" required>
+
+<label>Service</label>
+<select id="service">
+<option>Haircut</option>
+<option>Blow Dry</option>
+<option>Hair Colour</option>
+<option>Keratin Treatment</option>
+</select>
+
+<label>Date</label>
+<input type="date" id="date" required>
+
+<label>Time</label>
+<input type="time" id="time" required>
+
+<button type="submit">Book Appointment</button>
+
+</form>
+
+<p id="message"></p>
+
+</div>
+
+<script>
+const today = new Date().toISOString().split("T")[0];
+document.getElementById("date").setAttribute("min", today);
+
+document.getElementById("bookingForm").addEventListener("submit", async function(e){
+e.preventDefault();
+
+const data = {
+name: document.getElementById("name").value,
+email: document.getElementById("email").value,
+phone: document.getElementById("phone").value,
+service: document.getElementById("service").value,
+date: document.getElementById("date").value,
+time: document.getElementById("time").value
+};
+
+try {
+await fetch("https://raj80oo470.execute-api.eu-north-1.amazonaws.com/bookings", {
+method: "POST",
+headers: {"Content-Type": "application/json"},
+body: JSON.stringify(data)
+});
+
+document.getElementById("message").innerText = "Booking saved successfully!";
+document.getElementById("bookingForm").reset();
+
+} catch {
+document.getElementById("message").innerText = "Error saving booking";
+}
+});
+</script>
+
+</body>
+</html>
